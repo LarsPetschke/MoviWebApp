@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Filme von Nutzer {{ user_id }}</h1>
+
+<ul class="movie-list">
+    {% for movie in movies %}
+    <li class="movie-entry">
+        <strong>{{ movie.name }}</strong>
+        <br>
+        Regisseur: {{ movie.director }}<br>
+        Jahr: {{ movie.year }}<br>
+
+        {% if movie.poster_url %}
+            <img src="{{ movie.poster_url }}" alt="Poster" width="120">
+        {% endif %}
+
+        <!-- Film aktualisieren -->
+        <form action="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}" method="post">
+            <input type="text" name="new_title" placeholder="Neuer Titel" required>
+            <button type="submit">Aktualisieren</button>
+        </form>
+
+        <!-- Film löschen -->
+        <form action="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}" method="post">
+            <button type="submit" style="background:#c0392b;">Löschen</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Neuen Film hinzufügen</h2>
+
+<form action="{{ url_for('add_movie', user_id=user_id) }}" method="post">
+    <input type="text" name="title" placeholder="Filmtitel eingeben" required>
+    <button type="submit">Hinzufügen</button>
+</form>
+
+{% endblock %}
