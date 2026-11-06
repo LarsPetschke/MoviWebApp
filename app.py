@@ -21,6 +21,13 @@ data_manager = DataManager()
 def home():
     return "Welcome to MoviWeb App!"
 
+# Neue Route: Liste aller Nutzer
+@app.route('/users')
+def list_users():
+    users = data_manager.get_users()
+    return str(users)  # Temporäre Ausgabe
+    # Später ersetzen wir das durch ein Template
+
 # App starten + Datenbank erzeugen
 if __name__ == '__main__':
     with app.app_context():
