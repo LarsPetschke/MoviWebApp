@@ -97,9 +97,8 @@ import os
 
 app = Flask(__name__)
 
-# SQLAlchemy konfigurieren
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/movies.db')}"
+# Codio-Datenbank im instance/-Ordner
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///instance/movies.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Datenbank mit der App verknüpfen
