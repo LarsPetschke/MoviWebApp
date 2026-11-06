@@ -178,6 +178,14 @@ def delete_movie(user_id, movie_id):
 
 
 # ---------------------------------------------------------
+# Fehlerbehandlung (POST)
+# ---------------------------------------------------------
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+# ---------------------------------------------------------
 # App starten + Datenbank erzeugen
 # ---------------------------------------------------------
 if __name__ == '__main__':

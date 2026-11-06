@@ -7,11 +7,15 @@ class DataManager:
     # -------------------------
 
     def create_user(self, name):
-        """Create a new user."""
-        new_user = User(name=name)
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user
+        try:
+            new_user = User(name=name)
+            db.session.add(new_user)
+            db.session.commit()
+            return new_user
+        except Exception as e:
+            db.session.rollback()
+            print("Fehler beim Erstellen eines Nutzers:", str(e))
+            return None
 
     def get_users(self):
         """Return all users."""
