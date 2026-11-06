@@ -1,99 +1,6 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, render_template
 from data_manager import DataManager
 from models import db, Movie
-import os
-
-app = Flask(__name__)
-
-# SQLAlchemy konfigurieren
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data/movies.db')}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Datenbank mit der App verknüpfen
-db.init_app(app)
-
-# DataManager erstellen
-data_manager = DataManager()
-
-
-# ---------------------------------------------------------
-# Startseite: Nutzer anzeigen (GET)
-# ---------------------------------------------------------
-@app.route('/')
-def home():
-    users = data_manager.get_users()
-    return str(users)   # später ersetzen wir das durch Templates
-
-
-# ---------------------------------------------------------
-# Nutzer hinzufügen (POST)
-# ---------------------------------------------------------
-@app.route('/users', methods=['POST'])
-def add_user():
-    name = request.form.get('name')
-    if name:
-        data_manager.create_user(name)
-    return redirect(url_for('home'))
-
-
-# ---------------------------------------------------------
-# Filme eines Nutzers anzeigen (GET)
-# ---------------------------------------------------------
-@app.route('/users/<int:user_id>/movies', methods=['GET'])
-def list_movies(user_id):
-    movies = data_manager.get_movies(user_id)
-    return str(movies)   # später ersetzen wir das durch Templates
-
-
-# ---------------------------------------------------------
-# Film hinzufügen (POST)
-# ---------------------------------------------------------
-@app.route('/users/<int:user_id>/movies', methods=['POST'])
-def add_movie(user_id):
-    title = request.form.get('title')
-
-    # OMDb-Integration kommt später
-    movie = Movie(
-        name=title,
-        director="Unknown",
-        year=0,
-        poster_url="",
-        user_id=user_id
-    )
-
-    data_manager.add_movie(movie)
-    return redirect(url_for('list_movies', user_id=user_id))
-
-
-# ---------------------------------------------------------
-# Film aktualisieren (POST)
-# ---------------------------------------------------------
-@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['POST'])
-def update_movie(user_id, movie_id):
-    new_title = request.form.get('new_title')
-    data_manager.update_movie(movie_id, new_title)
-    return redirect(url_for('list_movies', user_id=user_id))
-
-
-# ---------------------------------------------------------
-# Film löschen (POST)
-# ---------------------------------------------------------
-@app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
-def delete_movie(user_id, movie_id):
-    data_manager.delete_movie(movie_id)
-    return redirect(url_for('list_movies', user_id=user_id))
-
-
-# ---------------------------------------------------------
-# App starten + Datenbank erzeugen
-# ---------------------------------------------------------
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()from flask import Flask, request, redirect, url_for, render_template
-from data_manager import DataManager
-from models import db, Movie
-import os
 
 app = Flask(__name__)
 
@@ -144,7 +51,6 @@ def get_movies(user_id):
 def add_movie(user_id):
     title = request.form.get('title')
 
-    # OMDb-Integration kommt später
     movie = Movie(
         name=title,
         director="Unknown",
@@ -177,7 +83,7 @@ def delete_movie(user_id, movie_id):
 
 
 # ---------------------------------------------------------
-# Fehlerbehandlung (POST)
+# 404 Fehlerseite
 # ---------------------------------------------------------
 @app.errorhandler(404)
 def page_not_found(e):
@@ -190,6 +96,4 @@ def page_not_found(e):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
-
     app.run(debug=True)
