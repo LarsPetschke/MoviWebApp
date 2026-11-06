@@ -1,0 +1,99 @@
+/* Grundlayout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: #222;
+    color: white;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav a {
+    color: #ddd;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Nutzerliste */
+.user-list,
+.movie-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-entry,
+.movie-entry {
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+
+/* Formulare */
+form {
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1e7e34;
+}
+
+/* Fehlerseite */
+.error-box {
+    padding: 20px;
+    background: #ffdddd;
+    border-left: 5px solid #ff4444;
+    margin-top: 20px;
+}
