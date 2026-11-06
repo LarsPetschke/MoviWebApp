@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from models import db, User, Movie
 
 class DataManager:
@@ -21,6 +22,10 @@ class DataManager:
         """Return all users."""
         return User.query.all()
 
+    def get_user(self, user_id):
+        """Return a single user or None."""
+        return db.session.get(User, user_id)
+
     # -------------------------
     # MOVIE CRUD
     # -------------------------
@@ -28,6 +33,15 @@ class DataManager:
     def get_movies(self, user_id):
         """Return all movies for a specific user."""
         return Movie.query.filter_by(user_id=user_id).all()
+
+    def find_movie(self, title, year):
+        """Search all movies for title (case-insensitive) + year with a known director."""
+        return Movie.query.filter(
+            func.lower(Movie.name) == title.lower(),
+            Movie.year == year,
+            Movie.director != "Unknown",
+            Movie.director != ""
+        ).first()
 
     def add_movie(self, movie):
         """
@@ -39,11 +53,14 @@ class DataManager:
         db.session.commit()
         return movie
 
-    def update_movie(self, movie_id, new_title):
-        """Update the title of a movie."""
+    def update_movie(self, movie_id, new_title=None, new_year=None):
+        """Update title and/or year of a movie (None = unchanged)."""
         movie = Movie.query.get(movie_id)
         if movie:
-            movie.name = new_title
+            if new_title:
+                movie.name = new_title
+            if new_year is not None:
+                movie.year = new_year
             db.session.commit()
         return movie
 
